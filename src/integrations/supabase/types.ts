@@ -14,7 +14,104 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      documents: {
+        Row: {
+          content: Json | null
+          created_at: string
+          id: string
+          title: string
+          type: Database["public"]["Enums"]["document_type"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content?: Json | null
+          created_at?: string
+          id?: string
+          title: string
+          type: Database["public"]["Enums"]["document_type"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: Json | null
+          created_at?: string
+          id?: string
+          title?: string
+          type?: Database["public"]["Enums"]["document_type"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      exports: {
+        Row: {
+          created_at: string
+          document_id: string | null
+          file_name: string
+          format: Database["public"]["Enums"]["export_format"]
+          id: string
+          status: Database["public"]["Enums"]["export_status"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          document_id?: string | null
+          file_name: string
+          format: Database["public"]["Enums"]["export_format"]
+          id?: string
+          status?: Database["public"]["Enums"]["export_status"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          document_id?: string | null
+          file_name?: string
+          format?: Database["public"]["Enums"]["export_format"]
+          id?: string
+          status?: Database["public"]["Enums"]["export_status"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "exports_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          export_format_default: string | null
+          full_name: string | null
+          id: string
+          language_preference: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          export_format_default?: string | null
+          full_name?: string | null
+          id?: string
+          language_preference?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          export_format_default?: string | null
+          full_name?: string | null
+          id?: string
+          language_preference?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +120,9 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      document_type: "cv" | "cover_letter" | "book" | "translation"
+      export_format: "pdf" | "docx" | "epub"
+      export_status: "completed" | "processing" | "failed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +249,10 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      document_type: ["cv", "cover_letter", "book", "translation"],
+      export_format: ["pdf", "docx", "epub"],
+      export_status: ["completed", "processing", "failed"],
+    },
   },
 } as const
