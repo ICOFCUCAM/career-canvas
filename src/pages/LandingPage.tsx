@@ -63,6 +63,15 @@ export default function LandingPage() {
               </Button>
             </Link>
           </div>
+          <div className="mx-auto mt-12 max-w-4xl">
+            <img
+              src={heroImage}
+              alt="DocuAI platform showing CV templates, cover letters, book creator, and translation tools"
+              width={1920}
+              height={1024}
+              className="rounded-2xl border shadow-2xl shadow-primary/10"
+            />
+          </div>
         </div>
       </section>
 
