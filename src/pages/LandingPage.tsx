@@ -4,6 +4,7 @@ import {
   FileText, Mail, Briefcase, BookOpen, Languages, Grid3X3,
   Sparkles, Upload, Download, ArrowRight, Star, Check,
 } from "lucide-react";
+import heroImage from "@/assets/hero-illustration.jpg";
 
 const features = [
   { icon: FileText, title: "CV Builder", desc: "Professional resumes with AI-powered optimization and ATS scoring." },
