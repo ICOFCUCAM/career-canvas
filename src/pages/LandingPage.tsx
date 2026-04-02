@@ -4,6 +4,7 @@ import {
   FileText, Mail, Briefcase, BookOpen, Languages, Grid3X3,
   Sparkles, Upload, Download, ArrowRight, Star, Check,
 } from "lucide-react";
+import heroImage from "@/assets/hero-illustration.jpg";
 
 const features = [
   { icon: FileText, title: "CV Builder", desc: "Professional resumes with AI-powered optimization and ATS scoring." },
@@ -61,6 +62,15 @@ export default function LandingPage() {
                 View Templates
               </Button>
             </Link>
+          </div>
+          <div className="mx-auto mt-12 max-w-4xl">
+            <img
+              src={heroImage}
+              alt="DocuAI platform showing CV templates, cover letters, book creator, and translation tools"
+              width={1920}
+              height={1024}
+              className="rounded-2xl border shadow-2xl shadow-primary/10"
+            />
           </div>
         </div>
       </section>
