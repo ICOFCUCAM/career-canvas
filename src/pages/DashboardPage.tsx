@@ -1,11 +1,11 @@
 import { WorkspaceLayout } from "@/components/WorkspaceLayout";
 import { PageHeader } from "@/components/PageHeader";
-import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import {
   FileText, Mail, Briefcase, BookOpen, Languages,
-  Plus, Clock, TrendingUp, Download,
+  Clock, TrendingUp, Download,
 } from "lucide-react";
+import { useDocuments } from "@/hooks/useDocuments";
 
 const quickActions = [
   { icon: FileText, label: "New CV", path: "/cv", color: "text-primary" },
@@ -15,26 +15,28 @@ const quickActions = [
   { icon: Languages, label: "Translate", path: "/translate", color: "text-primary" },
 ];
 
-const recentDocs = [
-  { title: "Software Engineer CV", type: "CV", updated: "2 hours ago" },
-  { title: "Google Cover Letter", type: "Cover Letter", updated: "5 hours ago" },
-  { title: "Portfolio Book Ch.3", type: "Book", updated: "1 day ago" },
-  { title: "Resume — Norwegian", type: "Translation", updated: "2 days ago" },
-];
-
 const suggestions = [
   { text: "Add a professional summary to your latest CV", priority: "High" },
   { text: "Your cover letter could use stronger action verbs", priority: "Medium" },
   { text: "Consider adding certifications section", priority: "Low" },
 ];
 
+const typeLabels: Record<string, string> = {
+  cv: "CV",
+  cover_letter: "Cover Letter",
+  book: "Book",
+  translation: "Translation",
+};
+
 export default function DashboardPage() {
+  const { data: documents } = useDocuments();
+  const recentDocs = (documents || []).slice(0, 5);
+
   return (
     <WorkspaceLayout>
       <div className="mx-auto max-w-5xl animate-fade-in">
         <PageHeader title="Dashboard" subtitle="Welcome back. Pick up where you left off." />
 
-        {/* Quick Actions */}
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
           {quickActions.map((a) => (
             <Link key={a.path} to={a.path} className="glass-card-hover flex flex-col items-center gap-2 p-4">
@@ -47,7 +49,6 @@ export default function DashboardPage() {
         </div>
 
         <div className="mt-6 grid gap-4 lg:grid-cols-3">
-          {/* Recent Documents */}
           <div className="glass-card p-5 lg:col-span-2">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-sm font-semibold flex items-center gap-2">
@@ -56,24 +57,28 @@ export default function DashboardPage() {
               <Link to="/library" className="text-xs text-primary hover:underline">View all</Link>
             </div>
             <div className="space-y-2">
-              {recentDocs.map((d) => (
-                <div key={d.title} className="flex items-center justify-between rounded-lg p-3 hover:bg-surface-hover transition-colors">
-                  <div className="flex items-center gap-3">
-                    <FileText className="h-4 w-4 text-muted-foreground" />
-                    <div>
-                      <p className="text-sm font-medium">{d.title}</p>
-                      <p className="text-xs text-muted-foreground">{d.type}</p>
+              {recentDocs.length === 0 ? (
+                <p className="py-6 text-center text-sm text-muted-foreground">No documents yet. Create your first CV or cover letter!</p>
+              ) : (
+                recentDocs.map((d) => (
+                  <div key={d.id} className="flex items-center justify-between rounded-lg p-3 hover:bg-surface-hover transition-colors">
+                    <div className="flex items-center gap-3">
+                      <FileText className="h-4 w-4 text-muted-foreground" />
+                      <div>
+                        <p className="text-sm font-medium">{d.title}</p>
+                        <p className="text-xs text-muted-foreground">{typeLabels[d.type] || d.type}</p>
+                      </div>
                     </div>
+                    <span className="text-xs text-muted-foreground">
+                      {new Date(d.updated_at).toLocaleDateString()}
+                    </span>
                   </div>
-                  <span className="text-xs text-muted-foreground">{d.updated}</span>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
 
-          {/* Right column */}
           <div className="flex flex-col gap-4">
-            {/* Suggestions */}
             <div className="glass-card p-5">
               <h2 className="mb-3 text-sm font-semibold flex items-center gap-2">
                 <TrendingUp className="h-4 w-4 text-muted-foreground" /> Suggestions
@@ -94,23 +99,19 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            {/* Export Status */}
             <div className="glass-card p-5">
               <h2 className="mb-3 text-sm font-semibold flex items-center gap-2">
-                <Download className="h-4 w-4 text-muted-foreground" /> Recent Exports
+                <Download className="h-4 w-4 text-muted-foreground" /> Stats
               </h2>
-              <div className="space-y-2">
-                {[
-                  { name: "CV_2026.pdf", status: "Completed" },
-                  { name: "CoverLetter.docx", status: "Completed" },
-                ].map((e) => (
-                  <div key={e.name} className="flex items-center justify-between text-xs">
-                    <span className="font-medium">{e.name}</span>
-                    <span className="rounded-full bg-success/10 px-2 py-0.5 text-[10px] font-medium text-success">
-                      {e.status}
-                    </span>
-                  </div>
-                ))}
+              <div className="grid grid-cols-2 gap-3 text-center">
+                <div>
+                  <p className="text-2xl font-bold text-primary">{documents?.length || 0}</p>
+                  <p className="text-xs text-muted-foreground">Documents</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-primary">0</p>
+                  <p className="text-xs text-muted-foreground">Exports</p>
+                </div>
               </div>
             </div>
           </div>
