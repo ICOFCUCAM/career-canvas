@@ -4,8 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
-import { Save, Sparkles, Target, Download, Plus, Trash2, FileText } from "lucide-react";
+import { Save, Sparkles, Target, Download, Plus, Trash2, FileText, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { useAIAssist } from "@/hooks/useAIAssist";
+import { useSaveDocument } from "@/hooks/useDocuments";
+import { useToast } from "@/hooks/use-toast";
 
 interface ExperienceItem {
   id: string;
@@ -16,6 +19,7 @@ interface ExperienceItem {
 }
 
 export default function CVBuilderPage() {
+  const [docId, setDocId] = useState<string | undefined>();
   const [name, setName] = useState("John Doe");
   const [title, setTitle] = useState("Senior Software Engineer");
   const [email, setEmail] = useState("john@example.com");
@@ -29,6 +33,46 @@ export default function CVBuilderPage() {
   const [education, setEducation] = useState("B.Sc. Computer Science — MIT, 2019");
   const [certifications, setCertifications] = useState("AWS Solutions Architect, Google Cloud Professional");
   const [languages, setLanguages] = useState("English (Native), Norwegian (B2), Spanish (A2)");
+
+  const { assist, loading: aiLoading } = useAIAssist();
+  const saveDocument = useSaveDocument();
+  const { toast } = useToast();
+
+  const getCVContent = () => ({
+    name, title, email, phone, summary, skills, experiences, education, certifications, languages,
+  });
+
+  const handleSave = () => {
+    saveDocument.mutate({
+      id: docId,
+      title: `${name} — ${title}`,
+      type: "cv",
+      content: getCVContent(),
+    }, {
+      onSuccess: (data) => {
+        if (data?.id) setDocId(data.id);
+      },
+    });
+  };
+
+  const handleImproveWithAI = async () => {
+    const result = await assist({
+      action: "improve_cv",
+      content: getCVContent(),
+    });
+    if (result) {
+      try {
+        const improved = JSON.parse(result);
+        if (improved.summary) setSummary(improved.summary);
+        if (improved.skills) setSkills(improved.skills);
+        toast({ title: "AI Improved", description: "Your CV has been enhanced." });
+      } catch {
+        // If not JSON, use as improved summary
+        setSummary(result);
+        toast({ title: "AI Improved", description: "Summary has been enhanced." });
+      }
+    }
+  };
 
   const addExperience = () => {
     setExperiences([...experiences, { id: Date.now().toString(), title: "", company: "", period: "", description: "" }]);
@@ -50,8 +94,12 @@ export default function CVBuilderPage() {
           subtitle="Build your professional resume"
           actions={
             <div className="flex flex-wrap gap-2">
-              <Button variant="outline" size="sm" className="gap-1.5"><Save className="h-3.5 w-3.5" /> Save</Button>
-              <Button variant="outline" size="sm" className="gap-1.5"><Sparkles className="h-3.5 w-3.5" /> Improve with AI</Button>
+              <Button variant="outline" size="sm" className="gap-1.5" onClick={handleSave} disabled={saveDocument.isPending}>
+                {saveDocument.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />} Save
+              </Button>
+              <Button variant="outline" size="sm" className="gap-1.5" onClick={handleImproveWithAI} disabled={aiLoading}>
+                {aiLoading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />} Improve with AI
+              </Button>
               <Button variant="outline" size="sm" className="gap-1.5"><Target className="h-3.5 w-3.5" /> Match JD</Button>
               <Button size="sm" className="gap-1.5"><Download className="h-3.5 w-3.5" /> Export PDF</Button>
             </div>
