@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Plus, Trash2, Sparkles, Download, BookOpen, Tag, User, FileText, GripVertical } from "lucide-react";
 import { useState } from "react";
+import bookCreatorImg from "@/assets/book-creator-illustration.jpg";
 
 interface Chapter {
   id: string;
