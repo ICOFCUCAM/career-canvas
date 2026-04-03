@@ -6,6 +6,7 @@ import {
   Clock, TrendingUp, Download,
 } from "lucide-react";
 import { useDocuments } from "@/hooks/useDocuments";
+import dashboardImg from "@/assets/dashboard-illustration.jpg";
 
 const quickActions = [
   { icon: FileText, label: "New CV", path: "/cv", color: "text-primary" },
@@ -36,6 +37,10 @@ export default function DashboardPage() {
     <WorkspaceLayout>
       <div className="mx-auto max-w-5xl animate-fade-in">
         <PageHeader title="Dashboard" subtitle="Welcome back. Pick up where you left off." />
+
+        <div className="mb-6 overflow-hidden rounded-xl border">
+          <img src={dashboardImg} alt="Your DocuAI workspace" width={800} height={512} className="w-full h-40 object-cover" />
+        </div>
 
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
           {quickActions.map((a) => (

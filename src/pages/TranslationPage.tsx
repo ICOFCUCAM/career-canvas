@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Languages, Download, FileText, ArrowRightLeft, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useAIAssist } from "@/hooks/useAIAssist";
+import translationImg from "@/assets/translation-illustration.jpg";
 
 const languagesList = ["English", "Norwegian", "Spanish", "French", "German", "Arabic", "Chinese", "Japanese"];
 const tones = ["Professional", "Formal", "Academic", "Norwegian workplace style"];
@@ -44,6 +45,10 @@ export default function TranslationPage() {
             </div>
           }
         />
+
+        <div className="mb-4 overflow-hidden rounded-xl border">
+          <img src={translationImg} alt="Document translation" loading="lazy" width={800} height={512} className="w-full h-36 object-cover" />
+        </div>
 
         <div className="glass-card mb-4 flex flex-wrap items-center gap-3 p-4">
           <Select value={sourceLang} onValueChange={setSourceLang}>

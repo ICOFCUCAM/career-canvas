@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Plus, Trash2, Sparkles, Download, BookOpen, Tag, User, FileText, GripVertical } from "lucide-react";
 import { useState } from "react";
+import bookCreatorImg from "@/assets/book-creator-illustration.jpg";
 
 interface Chapter {
   id: string;
@@ -56,6 +57,10 @@ export default function BookCreatorPage() {
             </div>
           }
         />
+
+        <div className="mb-6 overflow-hidden rounded-xl border">
+          <img src={bookCreatorImg} alt="Book creation and publishing" loading="lazy" width={800} height={512} className="w-full h-36 object-cover" />
+        </div>
 
         <div className="grid gap-6 lg:grid-cols-[240px_1fr_240px]">
           {/* Chapter List */}

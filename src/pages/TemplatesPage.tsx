@@ -4,8 +4,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FileText, Heart, Search } from "lucide-react";
 import { useState } from "react";
+import templateCv from "@/assets/template-cv.jpg";
+import templateCoverLetter from "@/assets/template-cover-letter.jpg";
+import templateCreative from "@/assets/template-creative.jpg";
+import templateAcademic from "@/assets/template-academic.jpg";
 
 const categories = ["All", "Modern CV", "Academic", "Corporate", "Creative", "Minimal"];
+
+const templateImages: Record<string, string> = {
+  "Modern CV": templateCv,
+  "Academic": templateAcademic,
+  "Creative": templateCreative,
+  "Corporate": templateCoverLetter,
+  "Minimal": templateCv,
+};
 
 const templates = [
   { id: 1, name: "Modern Professional", category: "Modern CV", desc: "Clean layout with sidebar" },
@@ -68,8 +80,12 @@ export default function TemplatesPage() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filtered.map((t) => (
             <div key={t.id} className="glass-card-hover group overflow-hidden">
-              <div className="relative flex h-44 items-center justify-center bg-secondary">
-                <FileText className="h-12 w-12 text-muted-foreground/30" />
+              <div className="relative h-44 overflow-hidden bg-secondary">
+                {templateImages[t.category] ? (
+                  <img src={templateImages[t.category]} alt={t.name} loading="lazy" className="h-full w-full object-cover" />
+                ) : (
+                  <div className="flex h-full items-center justify-center"><FileText className="h-12 w-12 text-muted-foreground/30" /></div>
+                )}
                 <button
                   onClick={() => toggleFav(t.id)}
                   className="absolute right-2 top-2 rounded-full bg-card/80 p-1.5 opacity-0 transition-opacity group-hover:opacity-100"
