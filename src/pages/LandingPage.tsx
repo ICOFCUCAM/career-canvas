@@ -5,6 +5,12 @@ import {
   Sparkles, Upload, Download, ArrowRight, Star, Check,
 } from "lucide-react";
 import heroImage from "@/assets/hero-illustration.jpg";
+import templateCv from "@/assets/template-cv.jpg";
+import templateCoverLetter from "@/assets/template-cover-letter.jpg";
+import templateCreative from "@/assets/template-creative.jpg";
+import templateAcademic from "@/assets/template-academic.jpg";
+
+const templateImages = [templateCv, templateAcademic, templateCoverLetter, templateCreative];
 
 const features = [
   { icon: FileText, title: "CV Builder", desc: "Professional resumes with AI-powered optimization and ATS scoring." },
