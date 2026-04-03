@@ -46,6 +46,10 @@ export default function TranslationPage() {
           }
         />
 
+        <div className="mb-4 overflow-hidden rounded-xl border">
+          <img src={translationImg} alt="Document translation" loading="lazy" width={800} height={512} className="w-full h-36 object-cover" />
+        </div>
+
         <div className="glass-card mb-4 flex flex-wrap items-center gap-3 p-4">
           <Select value={sourceLang} onValueChange={setSourceLang}>
             <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>

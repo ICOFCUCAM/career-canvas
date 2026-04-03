@@ -95,7 +95,8 @@ export default function JobMatchingPage() {
                 </div>
               </>
             ) : (
-              <div className="glass-card flex h-64 items-center justify-center p-5">
+              <div className="glass-card flex flex-col items-center justify-center gap-4 p-5">
+                <img src={jobMatchingImg} alt="Job matching analysis" loading="lazy" width={800} height={512} className="rounded-lg" />
                 <p className="text-sm text-muted-foreground">Paste a job description and click Analyze to see results.</p>
               </div>
             )}

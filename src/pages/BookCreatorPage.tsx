@@ -58,6 +58,10 @@ export default function BookCreatorPage() {
           }
         />
 
+        <div className="mb-6 overflow-hidden rounded-xl border">
+          <img src={bookCreatorImg} alt="Book creation and publishing" loading="lazy" width={800} height={512} className="w-full h-36 object-cover" />
+        </div>
+
         <div className="grid gap-6 lg:grid-cols-[240px_1fr_240px]">
           {/* Chapter List */}
           <div className="glass-card p-4 space-y-2">

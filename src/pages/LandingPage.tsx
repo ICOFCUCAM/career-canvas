@@ -128,10 +128,10 @@ export default function LandingPage() {
           <p className="mt-2 text-muted-foreground">Start with professionally designed templates.</p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {["Modern CV", "Academic CV", "Corporate Letter", "Creative Resume"].map((t) => (
+          {["Modern CV", "Academic CV", "Corporate Letter", "Creative Resume"].map((t, i) => (
             <div key={t} className="glass-card-hover group overflow-hidden">
-              <div className="flex h-40 items-center justify-center bg-secondary">
-                <FileText className="h-10 w-10 text-muted-foreground/40" />
+              <div className="h-40 overflow-hidden bg-secondary">
+                <img src={templateImages[i]} alt={t} loading="lazy" className="h-full w-full object-cover transition-transform group-hover:scale-105" />
               </div>
               <div className="p-4">
                 <h3 className="text-sm font-medium">{t}</h3>

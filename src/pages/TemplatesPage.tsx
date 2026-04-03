@@ -80,8 +80,12 @@ export default function TemplatesPage() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filtered.map((t) => (
             <div key={t.id} className="glass-card-hover group overflow-hidden">
-              <div className="relative flex h-44 items-center justify-center bg-secondary">
-                <FileText className="h-12 w-12 text-muted-foreground/30" />
+              <div className="relative h-44 overflow-hidden bg-secondary">
+                {templateImages[t.category] ? (
+                  <img src={templateImages[t.category]} alt={t.name} loading="lazy" className="h-full w-full object-cover" />
+                ) : (
+                  <div className="flex h-full items-center justify-center"><FileText className="h-12 w-12 text-muted-foreground/30" /></div>
+                )}
                 <button
                   onClick={() => toggleFav(t.id)}
                   className="absolute right-2 top-2 rounded-full bg-card/80 p-1.5 opacity-0 transition-opacity group-hover:opacity-100"
