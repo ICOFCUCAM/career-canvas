@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Upload, Target, TrendingUp, AlertCircle, CheckCircle } from "lucide-react";
 import { useState } from "react";
+import jobMatchingImg from "@/assets/job-matching-illustration.jpg";
 
 const mockKeywords = ["React", "TypeScript", "Node.js", "CI/CD", "Agile", "REST API", "GraphQL", "AWS", "Docker"];
 const mockMissing = ["GraphQL", "Docker"];
