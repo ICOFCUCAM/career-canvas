@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Languages, Download, FileText, ArrowRightLeft, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useAIAssist } from "@/hooks/useAIAssist";
+import translationImg from "@/assets/translation-illustration.jpg";
 
 const languagesList = ["English", "Norwegian", "Spanish", "French", "German", "Arabic", "Chinese", "Japanese"];
 const tones = ["Professional", "Formal", "Academic", "Norwegian workplace style"];
