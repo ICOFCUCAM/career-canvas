@@ -4,8 +4,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FileText, Heart, Search } from "lucide-react";
 import { useState } from "react";
+import templateCv from "@/assets/template-cv.jpg";
+import templateCoverLetter from "@/assets/template-cover-letter.jpg";
+import templateCreative from "@/assets/template-creative.jpg";
+import templateAcademic from "@/assets/template-academic.jpg";
 
 const categories = ["All", "Modern CV", "Academic", "Corporate", "Creative", "Minimal"];
+
+const templateImages: Record<string, string> = {
+  "Modern CV": templateCv,
+  "Academic": templateAcademic,
+  "Creative": templateCreative,
+  "Corporate": templateCoverLetter,
+  "Minimal": templateCv,
+};
 
 const templates = [
   { id: 1, name: "Modern Professional", category: "Modern CV", desc: "Clean layout with sidebar" },
