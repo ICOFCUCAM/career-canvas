@@ -6,6 +6,7 @@ import {
   Clock, TrendingUp, Download,
 } from "lucide-react";
 import { useDocuments } from "@/hooks/useDocuments";
+import dashboardImg from "@/assets/dashboard-illustration.jpg";
 
 const quickActions = [
   { icon: FileText, label: "New CV", path: "/cv", color: "text-primary" },
