@@ -14,6 +14,128 @@ export type Database = {
   }
   public: {
     Tables: {
+      books: {
+        Row: {
+          author_bio: string | null
+          author_name: string | null
+          back_matter: Json | null
+          categories: string[] | null
+          cover_direction: Json | null
+          created_at: string
+          depth: string | null
+          description: string | null
+          front_matter: Json | null
+          id: string
+          keywords: string[] | null
+          positioning: string | null
+          status: string
+          strategy: Json | null
+          subtitle: string | null
+          target_audience: string | null
+          title: string
+          tone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          author_bio?: string | null
+          author_name?: string | null
+          back_matter?: Json | null
+          categories?: string[] | null
+          cover_direction?: Json | null
+          created_at?: string
+          depth?: string | null
+          description?: string | null
+          front_matter?: Json | null
+          id?: string
+          keywords?: string[] | null
+          positioning?: string | null
+          status?: string
+          strategy?: Json | null
+          subtitle?: string | null
+          target_audience?: string | null
+          title?: string
+          tone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          author_bio?: string | null
+          author_name?: string | null
+          back_matter?: Json | null
+          categories?: string[] | null
+          cover_direction?: Json | null
+          created_at?: string
+          depth?: string | null
+          description?: string | null
+          front_matter?: Json | null
+          id?: string
+          keywords?: string[] | null
+          positioning?: string | null
+          status?: string
+          strategy?: Json | null
+          subtitle?: string | null
+          target_audience?: string | null
+          title?: string
+          tone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      chapters: {
+        Row: {
+          book_id: string
+          chapter_number: number
+          content: string | null
+          created_at: string
+          hook: string | null
+          id: string
+          status: string
+          summary: string | null
+          title: string
+          updated_at: string
+          user_id: string
+          word_count: number | null
+        }
+        Insert: {
+          book_id: string
+          chapter_number?: number
+          content?: string | null
+          created_at?: string
+          hook?: string | null
+          id?: string
+          status?: string
+          summary?: string | null
+          title?: string
+          updated_at?: string
+          user_id: string
+          word_count?: number | null
+        }
+        Update: {
+          book_id?: string
+          chapter_number?: number
+          content?: string | null
+          created_at?: string
+          hook?: string | null
+          id?: string
+          status?: string
+          summary?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+          word_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chapters_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "books"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       documents: {
         Row: {
           content: Json | null
@@ -78,6 +200,50 @@ export type Database = {
             columns: ["document_id"]
             isOneToOne: false
             referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      generated_assets: {
+        Row: {
+          asset_type: string
+          book_id: string | null
+          content: string | null
+          created_at: string
+          id: string
+          metadata: Json | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          asset_type: string
+          book_id?: string | null
+          content?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          asset_type?: string
+          book_id?: string | null
+          content?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "generated_assets_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "books"
             referencedColumns: ["id"]
           },
         ]
