@@ -663,7 +663,7 @@ export default function BookCreatorPage() {
                 <GripVertical className="h-3 w-3 shrink-0 opacity-40" />
                 <span className="truncate flex-1">{ch.chapter_number}. {ch.title}</span>
                 {ch.status === "complete" && <div className="h-1.5 w-1.5 rounded-full bg-primary shrink-0" />}
-                {ch.status === "improved" && <div className="h-1.5 w-1.5 rounded-full bg-green-500 shrink-0" />}
+                {ch.status === "improved" && <div className="h-1.5 w-1.5 rounded-full bg-accent shrink-0" />}
               </button>
             ))}
           </div>
