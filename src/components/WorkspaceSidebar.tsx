@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard, FileText, Mail, Briefcase, BookOpen,
   Languages, Grid3X3, FolderOpen, Download, User, ChevronLeft, ChevronRight,
+  Copy,
 } from "lucide-react";
 import { useState } from "react";
 
