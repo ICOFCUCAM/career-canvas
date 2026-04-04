@@ -15,6 +15,8 @@ import templateCv from "@/assets/template-cv.jpg";
 import templateCoverLetter from "@/assets/template-cover-letter.jpg";
 import templateCreative from "@/assets/template-creative.jpg";
 import templateAcademic from "@/assets/template-academic.jpg";
+import templateMinimal from "@/assets/template-minimal.jpg";
+import templateBook from "@/assets/template-book.jpg";
 
 const categories = ["All", "Modern CV", "Academic", "Corporate", "Creative", "Minimal", "Cover Letter", "Book", "Custom"];
 
@@ -23,9 +25,9 @@ const templateImages: Record<string, string> = {
   "Academic": templateAcademic,
   "Creative": templateCreative,
   "Corporate": templateCoverLetter,
-  "Minimal": templateCv,
+  "Minimal": templateMinimal,
   "Cover Letter": templateCoverLetter,
-  "Book": templateAcademic,
+  "Book": templateBook,
 };
 
 const builtInTemplates = [

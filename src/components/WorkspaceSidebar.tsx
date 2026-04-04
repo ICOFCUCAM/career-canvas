@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard, FileText, Mail, Briefcase, BookOpen,
   Languages, Grid3X3, FolderOpen, Download, User, ChevronLeft, ChevronRight,
+  Copy,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -11,6 +12,7 @@ const sidebarItems = [
   { label: "Cover Letters", path: "/cover-letter", icon: Mail },
   { label: "Jobs", path: "/jobs", icon: Briefcase },
   { label: "Books", path: "/books", icon: BookOpen },
+  { label: "Repurpose", path: "/repurpose", icon: Copy },
   { label: "Translate", path: "/translate", icon: Languages },
   { label: "Templates", path: "/templates", icon: Grid3X3 },
   { label: "Library", path: "/library", icon: FolderOpen },
