@@ -40,6 +40,7 @@ const App = () => (
               <Route path="/cover-letter" element={<ProtectedRoute><CoverLetterPage /></ProtectedRoute>} />
               <Route path="/jobs" element={<ProtectedRoute><JobMatchingPage /></ProtectedRoute>} />
               <Route path="/books" element={<ProtectedRoute><BookCreatorPage /></ProtectedRoute>} />
+              <Route path="/repurpose" element={<ProtectedRoute><RepurposePage /></ProtectedRoute>} />
               <Route path="/translate" element={<ProtectedRoute><TranslationPage /></ProtectedRoute>} />
               <Route path="/templates" element={<ProtectedRoute><TemplatesPage /></ProtectedRoute>} />
               <Route path="/library" element={<ProtectedRoute><LibraryPage /></ProtectedRoute>} />

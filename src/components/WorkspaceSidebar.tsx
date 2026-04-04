@@ -12,6 +12,7 @@ const sidebarItems = [
   { label: "Cover Letters", path: "/cover-letter", icon: Mail },
   { label: "Jobs", path: "/jobs", icon: Briefcase },
   { label: "Books", path: "/books", icon: BookOpen },
+  { label: "Repurpose", path: "/repurpose", icon: Copy },
   { label: "Translate", path: "/translate", icon: Languages },
   { label: "Templates", path: "/templates", icon: Grid3X3 },
   { label: "Library", path: "/library", icon: FolderOpen },
