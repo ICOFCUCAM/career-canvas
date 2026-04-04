@@ -18,6 +18,7 @@ import TemplatesPage from "./pages/TemplatesPage";
 import LibraryPage from "./pages/LibraryPage";
 import ExportCenterPage from "./pages/ExportCenterPage";
 import ProfilePage from "./pages/ProfilePage";
+import RepurposePage from "./pages/RepurposePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
