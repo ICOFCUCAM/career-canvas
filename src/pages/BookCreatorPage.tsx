@@ -12,7 +12,7 @@ import { Progress } from "@/components/ui/progress";
 import {
   Plus, Trash2, Sparkles, Download, BookOpen, Tag, User, GripVertical,
   Zap, Wand2, RefreshCw, BarChart3, FileText, Loader2, ChevronRight,
-  Copy, Lightbulb, Target, PenTool, Package, ArrowRight,
+  Copy, Lightbulb, Target, PenTool, Package, ArrowRight, ImageIcon,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
@@ -578,6 +578,28 @@ export default function BookCreatorPage() {
                   <Copy className="h-5 w-5" />
                   <span className="text-sm font-medium">Repurpose Content</span>
                 </Button>
+
+                <Button variant="outline" className="gap-2 h-auto py-4 flex-col" onClick={async () => {
+                  if (!currentBook) return;
+                  const result = await engine.generateCover(
+                    currentBook.id,
+                    currentBook.title,
+                    currentBook.subtitle,
+                    currentBook.author_name,
+                    currentBook.cover_direction
+                  );
+                  if (result?.coverUrl) {
+                    queryClient.invalidateQueries({ queryKey: ["books"] });
+                    toast({ title: "Cover art generated!" });
+                  }
+                }} disabled={engine.loading}>
+                  {engine.loading && engine.loadingStep.includes("cover") ? (
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  ) : (
+                    <ImageIcon className="h-5 w-5" />
+                  )}
+                  <span className="text-sm font-medium">Generate Cover Art</span>
+                </Button>
               </div>
 
               <Separator />
@@ -745,6 +767,77 @@ export default function BookCreatorPage() {
                   {engine.loading ? <Loader2 className="h-3 w-3 animate-spin" /> : <Wand2 className="h-3 w-3" />}
                   Improve Chapter
                 </Button>
+              </div>
+            )}
+
+            {/* Book Cover */}
+            {currentBook && (
+              <div className="glass-card p-4 space-y-3">
+                <h2 className="text-sm font-semibold flex items-center gap-2">
+                  <ImageIcon className="h-3.5 w-3.5" /> Book Cover
+                </h2>
+                {currentBook.cover_url ? (
+                  <div className="space-y-2">
+                    <img
+                      src={currentBook.cover_url}
+                      alt={`Cover for ${currentBook.title}`}
+                      className="w-full rounded-lg border shadow-sm"
+                    />
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full gap-1.5"
+                      onClick={async () => {
+                        const result = await engine.generateCover(
+                          currentBook.id,
+                          currentBook.title,
+                          currentBook.subtitle,
+                          currentBook.author_name,
+                          currentBook.cover_direction
+                        );
+                        if (result?.coverUrl) {
+                          queryClient.invalidateQueries({ queryKey: ["books"] });
+                          toast({ title: "New cover generated!" });
+                        }
+                      }}
+                      disabled={engine.loading}
+                    >
+                      {engine.loading && engine.loadingStep.includes("cover") ? (
+                        <Loader2 className="h-3 w-3 animate-spin" />
+                      ) : (
+                        <RefreshCw className="h-3 w-3" />
+                      )}
+                      Regenerate Cover
+                    </Button>
+                  </div>
+                ) : (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full gap-1.5"
+                    onClick={async () => {
+                      const result = await engine.generateCover(
+                        currentBook.id,
+                        currentBook.title,
+                        currentBook.subtitle,
+                        currentBook.author_name,
+                        currentBook.cover_direction
+                      );
+                      if (result?.coverUrl) {
+                        queryClient.invalidateQueries({ queryKey: ["books"] });
+                        toast({ title: "Cover art generated!" });
+                      }
+                    }}
+                    disabled={engine.loading}
+                  >
+                    {engine.loading && engine.loadingStep.includes("cover") ? (
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                    ) : (
+                      <Sparkles className="h-3 w-3" />
+                    )}
+                    Generate Cover Art
+                  </Button>
+                )}
               </div>
             )}
 

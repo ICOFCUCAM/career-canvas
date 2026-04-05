@@ -80,6 +80,11 @@ export function useBookEngine() {
     return invoke("publishing_package", { bookTitle, subtitle, targetAudience, bookSummary });
   };
 
+  const generateCover = (bookId: string, title: string, subtitle?: string, authorName?: string, coverDirection?: any) => {
+    setLoadingStep("Generating cover art...");
+    return invoke("generate_cover", { bookId, title, subtitle, authorName, coverDirection });
+  };
+
   return {
     loading,
     loadingStep,
@@ -90,5 +95,6 @@ export function useBookEngine() {
     quickGenerate,
     repurpose,
     publishingPackage,
+    generateCover,
   };
 }
