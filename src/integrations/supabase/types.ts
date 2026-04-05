@@ -21,6 +21,7 @@ export type Database = {
           back_matter: Json | null
           categories: string[] | null
           cover_direction: Json | null
+          cover_url: string | null
           created_at: string
           depth: string | null
           description: string | null
@@ -43,6 +44,7 @@ export type Database = {
           back_matter?: Json | null
           categories?: string[] | null
           cover_direction?: Json | null
+          cover_url?: string | null
           created_at?: string
           depth?: string | null
           description?: string | null
@@ -65,6 +67,7 @@ export type Database = {
           back_matter?: Json | null
           categories?: string[] | null
           cover_direction?: Json | null
+          cover_url?: string | null
           created_at?: string
           depth?: string | null
           description?: string | null
