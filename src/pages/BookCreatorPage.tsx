@@ -578,6 +578,28 @@ export default function BookCreatorPage() {
                   <Copy className="h-5 w-5" />
                   <span className="text-sm font-medium">Repurpose Content</span>
                 </Button>
+
+                <Button variant="outline" className="gap-2 h-auto py-4 flex-col" onClick={async () => {
+                  if (!currentBook) return;
+                  const result = await engine.generateCover(
+                    currentBook.id,
+                    currentBook.title,
+                    currentBook.subtitle,
+                    currentBook.author_name,
+                    currentBook.cover_direction
+                  );
+                  if (result?.coverUrl) {
+                    queryClient.invalidateQueries({ queryKey: ["books"] });
+                    toast({ title: "Cover art generated!" });
+                  }
+                }} disabled={engine.loading}>
+                  {engine.loading && engine.loadingStep.includes("cover") ? (
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  ) : (
+                    <ImageIcon className="h-5 w-5" />
+                  )}
+                  <span className="text-sm font-medium">Generate Cover Art</span>
+                </Button>
               </div>
 
               <Separator />
