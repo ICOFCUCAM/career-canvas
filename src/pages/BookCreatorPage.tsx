@@ -12,7 +12,7 @@ import { Progress } from "@/components/ui/progress";
 import {
   Plus, Trash2, Sparkles, Download, BookOpen, Tag, User, GripVertical,
   Zap, Wand2, RefreshCw, BarChart3, FileText, Loader2, ChevronRight,
-  Copy, Lightbulb, Target, PenTool, Package, ArrowRight,
+  Copy, Lightbulb, Target, PenTool, Package, ArrowRight, ImageIcon,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
