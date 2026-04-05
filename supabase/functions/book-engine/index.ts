@@ -423,6 +423,63 @@ Start directly with content, no chapter title heading.`
         });
       }
 
+      // ========== GENERATE COVER ==========
+      case "generate_cover": {
+        const { bookId, title, subtitle, authorName, coverDirection } = params;
+        const style = coverDirection?.style || "modern minimalist";
+        const colors = coverDirection?.colors || "bold contrasting colors";
+        const typography = coverDirection?.typography || "clean sans-serif";
+
+        const imagePrompt = `Professional book cover design. Title: "${title}"${subtitle ? `, Subtitle: "${subtitle}"` : ""}${authorName ? `, Author: ${authorName}` : ""}. Style: ${style}. Color palette: ${colors}. Typography style: ${typography}. High-quality, publishing-ready, no bleed marks. The text should be clearly legible and well-composed.`;
+
+        const imageResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${LOVABLE_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: "google/gemini-3-pro-image-preview",
+            messages: [{ role: "user", content: imagePrompt }],
+            modalities: ["image", "text"],
+          }),
+        });
+
+        if (!imageResponse.ok) {
+          if (imageResponse.status === 429) throw new Error("RATE_LIMITED");
+          if (imageResponse.status === 402) throw new Error("CREDITS_EXHAUSTED");
+          throw new Error(`Image generation error: ${imageResponse.status}`);
+        }
+
+        const imageData = await imageResponse.json();
+        const base64Url = imageData.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+        if (!base64Url) throw new Error("No image generated");
+
+        // Extract base64 data and upload to storage
+        const base64Data = base64Url.replace(/^data:image\/\w+;base64,/, "");
+        const imageBytes = Uint8Array.from(atob(base64Data), (c) => c.charCodeAt(0));
+        const fileName = `${user.id}/${bookId || "draft"}-${Date.now()}.png`;
+
+        const serviceClient = createClient(supabaseUrl, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+        const { error: uploadErr } = await serviceClient.storage
+          .from("book-covers")
+          .upload(fileName, imageBytes, { contentType: "image/png", upsert: true });
+
+        if (uploadErr) throw new Error(`Upload failed: ${uploadErr.message}`);
+
+        const { data: publicUrl } = serviceClient.storage.from("book-covers").getPublicUrl(fileName);
+        const coverUrl = publicUrl.publicUrl;
+
+        // Save to book record
+        if (bookId) {
+          await supabase.from("books").update({ cover_url: coverUrl }).eq("id", bookId);
+        }
+
+        return new Response(JSON.stringify({ result: { coverUrl } }), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
       // ========== PUBLISHING PACKAGE ==========
       case "publishing_package": {
         const { bookTitle, subtitle, targetAudience, bookSummary } = params;
