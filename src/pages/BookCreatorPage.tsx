@@ -748,6 +748,77 @@ export default function BookCreatorPage() {
               </div>
             )}
 
+            {/* Book Cover */}
+            {currentBook && (
+              <div className="glass-card p-4 space-y-3">
+                <h2 className="text-sm font-semibold flex items-center gap-2">
+                  <ImageIcon className="h-3.5 w-3.5" /> Book Cover
+                </h2>
+                {currentBook.cover_url ? (
+                  <div className="space-y-2">
+                    <img
+                      src={currentBook.cover_url}
+                      alt={`Cover for ${currentBook.title}`}
+                      className="w-full rounded-lg border shadow-sm"
+                    />
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full gap-1.5"
+                      onClick={async () => {
+                        const result = await engine.generateCover(
+                          currentBook.id,
+                          currentBook.title,
+                          currentBook.subtitle,
+                          currentBook.author_name,
+                          currentBook.cover_direction
+                        );
+                        if (result?.coverUrl) {
+                          queryClient.invalidateQueries({ queryKey: ["books"] });
+                          toast({ title: "New cover generated!" });
+                        }
+                      }}
+                      disabled={engine.loading}
+                    >
+                      {engine.loading && engine.loadingStep.includes("cover") ? (
+                        <Loader2 className="h-3 w-3 animate-spin" />
+                      ) : (
+                        <RefreshCw className="h-3 w-3" />
+                      )}
+                      Regenerate Cover
+                    </Button>
+                  </div>
+                ) : (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full gap-1.5"
+                    onClick={async () => {
+                      const result = await engine.generateCover(
+                        currentBook.id,
+                        currentBook.title,
+                        currentBook.subtitle,
+                        currentBook.author_name,
+                        currentBook.cover_direction
+                      );
+                      if (result?.coverUrl) {
+                        queryClient.invalidateQueries({ queryKey: ["books"] });
+                        toast({ title: "Cover art generated!" });
+                      }
+                    }}
+                    disabled={engine.loading}
+                  >
+                    {engine.loading && engine.loadingStep.includes("cover") ? (
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                    ) : (
+                      <Sparkles className="h-3 w-3" />
+                    )}
+                    Generate Cover Art
+                  </Button>
+                )}
+              </div>
+            )}
+
             {/* Book Details */}
             {currentBook && (
               <div className="glass-card p-4 space-y-3">
