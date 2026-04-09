@@ -3,12 +3,16 @@ import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Separator } from "@/components/ui/separator";
-import { Save, Sparkles, Target, Download, Plus, Trash2, FileText, Loader2 } from "lucide-react";
-import { useState } from "react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Save, Sparkles, Target, Download, Plus, Trash2, FileText, Loader2, Layout } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useAIAssist } from "@/hooks/useAIAssist";
 import { useSaveDocument } from "@/hooks/useDocuments";
 import { useToast } from "@/hooks/use-toast";
+import { templateDefinitions, getTemplateById } from "@/data/templateDefinitions";
+import { templateImageMap } from "@/data/templateImages";
+import CVPreview from "@/components/cv/CVPreview";
 
 interface ExperienceItem {
   id: string;
@@ -18,8 +22,17 @@ interface ExperienceItem {
   description: string;
 }
 
+// Only CV-applicable categories
+const cvTemplates = templateDefinitions.filter(t =>
+  ["Modern CV", "Academic", "Corporate", "Creative", "Minimal"].includes(t.category)
+);
+
 export default function CVBuilderPage() {
+  const [searchParams] = useSearchParams();
+  const templateParam = searchParams.get("template");
+
   const [docId, setDocId] = useState<string | undefined>();
+  const [selectedTemplateId, setSelectedTemplateId] = useState(templateParam || "modern-professional");
   const [name, setName] = useState("John Doe");
   const [title, setTitle] = useState("Senior Software Engineer");
   const [email, setEmail] = useState("john@example.com");
@@ -33,13 +46,20 @@ export default function CVBuilderPage() {
   const [education, setEducation] = useState("B.Sc. Computer Science — MIT, 2019");
   const [certifications, setCertifications] = useState("AWS Solutions Architect, Google Cloud Professional");
   const [languages, setLanguages] = useState("English (Native), Norwegian (B2), Spanish (A2)");
+  const [showTemplatePicker, setShowTemplatePicker] = useState(false);
 
   const { assist, loading: aiLoading } = useAIAssist();
   const saveDocument = useSaveDocument();
   const { toast } = useToast();
 
+  useEffect(() => {
+    if (templateParam) setSelectedTemplateId(templateParam);
+  }, [templateParam]);
+
+  const selectedTemplate = getTemplateById(selectedTemplateId) || templateDefinitions[0];
+
   const getCVContent = () => ({
-    name, title, email, phone, summary, skills, experiences, education, certifications, languages,
+    name, title, email, phone, summary, skills, experiences, education, certifications, languages, templateId: selectedTemplateId,
   });
 
   const handleSave = () => {
@@ -67,7 +87,6 @@ export default function CVBuilderPage() {
         if (improved.skills) setSkills(improved.skills);
         toast({ title: "AI Improved", description: "Your CV has been enhanced." });
       } catch {
-        // If not JSON, use as improved summary
         setSummary(result);
         toast({ title: "AI Improved", description: "Summary has been enhanced." });
       }
@@ -91,9 +110,12 @@ export default function CVBuilderPage() {
       <div className="mx-auto max-w-6xl animate-fade-in">
         <PageHeader
           title="CV Builder"
-          subtitle="Build your professional resume"
+          subtitle={`Template: ${selectedTemplate.name}`}
           actions={
             <div className="flex flex-wrap gap-2">
+              <Button variant="outline" size="sm" className="gap-1.5" onClick={() => setShowTemplatePicker(!showTemplatePicker)}>
+                <Layout className="h-3.5 w-3.5" /> {showTemplatePicker ? "Hide Templates" : "Change Template"}
+              </Button>
               <Button variant="outline" size="sm" className="gap-1.5" onClick={handleSave} disabled={saveDocument.isPending}>
                 {saveDocument.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />} Save
               </Button>
@@ -105,6 +127,44 @@ export default function CVBuilderPage() {
             </div>
           }
         />
+
+        {/* Template Picker */}
+        {showTemplatePicker && (
+          <div className="mb-6 glass-card p-4">
+            <h3 className="text-sm font-semibold mb-3">Select a Template</h3>
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2">
+              {cvTemplates.map((t) => {
+                const img = templateImageMap[t.imageKey];
+                const isActive = t.id === selectedTemplateId;
+                return (
+                  <button
+                    key={t.id}
+                    onClick={() => { setSelectedTemplateId(t.id); setShowTemplatePicker(false); }}
+                    className={`group relative overflow-hidden rounded-lg border-2 transition-all ${
+                      isActive ? "border-primary ring-2 ring-primary/30" : "border-transparent hover:border-primary/40"
+                    }`}
+                  >
+                    {img ? (
+                      <img src={img} alt={t.name} className="h-24 w-full object-cover" loading="lazy" />
+                    ) : (
+                      <div className="h-24 w-full bg-secondary flex items-center justify-center">
+                        <FileText className="h-6 w-6 text-muted-foreground/40" />
+                      </div>
+                    )}
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-1">
+                      <p className="text-[9px] text-white font-medium leading-tight truncate">{t.name}</p>
+                    </div>
+                    {isActive && (
+                      <div className="absolute top-1 right-1 h-4 w-4 rounded-full bg-primary flex items-center justify-center">
+                        <span className="text-[8px] text-primary-foreground">✓</span>
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Editor */}
@@ -166,56 +226,17 @@ export default function CVBuilderPage() {
           </div>
 
           {/* Live Preview */}
-          <div className="glass-card sticky top-20 h-fit p-6 lg:p-8">
-            <div className="mb-4 flex items-center gap-2 text-xs text-muted-foreground">
-              <FileText className="h-3.5 w-3.5" /> Live Preview
-            </div>
-            <Separator className="mb-5" />
-            <div className="space-y-4">
-              <div>
-                <h2 className="text-xl font-bold">{name}</h2>
-                <p className="text-sm text-primary font-medium">{title}</p>
-                <p className="text-xs text-muted-foreground mt-1">{email} • {phone}</p>
-              </div>
-              <Separator />
-              <div>
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">Summary</h3>
-                <p className="text-sm">{summary}</p>
-              </div>
-              <div>
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Skills</h3>
-                <div className="flex flex-wrap gap-1.5">
-                  {skills.split(",").map((s) => s.trim()).filter(Boolean).map((s) => (
-                    <span key={s} className="rounded-md bg-surface-active px-2 py-0.5 text-xs font-medium text-primary">{s}</span>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Experience</h3>
-                {experiences.map((exp) => (
-                  <div key={exp.id} className="mb-3">
-                    <div className="flex items-baseline justify-between">
-                      <p className="text-sm font-semibold">{exp.title || "Untitled"}</p>
-                      <p className="text-xs text-muted-foreground">{exp.period}</p>
-                    </div>
-                    <p className="text-xs text-primary">{exp.company}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">{exp.description}</p>
-                  </div>
-                ))}
-              </div>
-              <div>
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">Education</h3>
-                <p className="text-sm">{education}</p>
-              </div>
-              <div>
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">Certifications</h3>
-                <p className="text-sm">{certifications}</p>
-              </div>
-              <div>
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">Languages</h3>
-                <p className="text-sm">{languages}</p>
+          <div className="sticky top-20 h-fit">
+            <div className="glass-card p-4 mb-2">
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <FileText className="h-3.5 w-3.5" /> Live Preview — <span className="font-medium text-foreground">{selectedTemplate.name}</span>
               </div>
             </div>
+            <CVPreview
+              data={{ name, title, email, phone, summary, skills, experiences, education, certifications, languages }}
+              style={selectedTemplate.style}
+              templateName={selectedTemplate.name}
+            />
           </div>
         </div>
       </div>
