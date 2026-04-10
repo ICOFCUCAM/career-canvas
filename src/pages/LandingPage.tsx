@@ -175,6 +175,44 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Newsroom */}
+      <section className="bg-card">
+        <div className="mx-auto max-w-5xl px-4 py-16 lg:py-20">
+          <div className="mb-10 text-center">
+            <div className="mb-3 inline-flex items-center gap-2 rounded-full border bg-surface-hover px-3 py-1 text-xs font-medium text-muted-foreground">
+              <Newspaper className="h-3 w-3 text-primary" /> New Feature
+            </div>
+            <h2 className="text-3xl font-bold tracking-tight">Digital Newspaper & Newsletter System</h2>
+            <p className="mx-auto mt-2 max-w-2xl text-muted-foreground">
+              Create stunning digital newspapers, write engaging newsletters, and distribute them to thousands — all from one powerful newsroom.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { icon: Newspaper, title: "Newspaper Builder", desc: "Design multi-column digital newspapers with drag-and-drop layouts and rich media." },
+              { icon: PenLine, title: "Newsletter Writing", desc: "Craft beautiful newsletters with AI-assisted writing, templates, and scheduling." },
+              { icon: Send, title: "Bulk Email Sending", desc: "Distribute to subscriber lists with analytics, segmentation, and deliverability tools." },
+              { icon: FileDown, title: "PDF Export", desc: "Export print-ready PDFs with professional typesetting and custom branding." },
+            ].map((f) => (
+              <div key={f.title} className="glass-card-hover p-5 text-center">
+                <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-surface-active">
+                  <f.icon className="h-5 w-5 text-primary" />
+                </div>
+                <h3 className="text-sm font-semibold">{f.title}</h3>
+                <p className="mt-1 text-xs text-muted-foreground">{f.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-8 text-center">
+            <Link to="/dashboard">
+              <Button size="lg" className="gap-2">
+                Try Newsroom <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Pricing */}
       <section className="mx-auto max-w-5xl px-4 py-16 lg:py-20">
         <div className="mb-10 text-center">
