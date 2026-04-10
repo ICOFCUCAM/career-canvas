@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import {
   FileText, Mail, Briefcase, BookOpen, Languages, Grid3X3,
   Sparkles, Upload, Download, ArrowRight, Star, Check,
+  Newspaper, PenLine, Send, FileDown,
 } from "lucide-react";
 import heroImage from "@/assets/hero-illustration.jpg";
 import templateCv from "@/assets/template-cv.jpg";
