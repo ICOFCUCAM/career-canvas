@@ -19,6 +19,7 @@ import LibraryPage from "./pages/LibraryPage";
 import ExportCenterPage from "./pages/ExportCenterPage";
 import ProfilePage from "./pages/ProfilePage";
 import RepurposePage from "./pages/RepurposePage";
+import NewsroomPage from "./pages/NewsroomPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -42,6 +43,7 @@ const App = () => (
               <Route path="/books" element={<ProtectedRoute><BookCreatorPage /></ProtectedRoute>} />
               <Route path="/repurpose" element={<ProtectedRoute><RepurposePage /></ProtectedRoute>} />
               <Route path="/translate" element={<ProtectedRoute><TranslationPage /></ProtectedRoute>} />
+              <Route path="/newsroom" element={<ProtectedRoute><NewsroomPage /></ProtectedRoute>} />
               <Route path="/templates" element={<ProtectedRoute><TemplatesPage /></ProtectedRoute>} />
               <Route path="/library" element={<ProtectedRoute><LibraryPage /></ProtectedRoute>} />
               <Route path="/exports" element={<ProtectedRoute><ExportCenterPage /></ProtectedRoute>} />
